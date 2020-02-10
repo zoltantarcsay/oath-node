@@ -56,6 +56,11 @@ public class OathVerifierNode extends AbstractDecisionNode {
     private static int SUBMIT = 0;
     static int RECOVERY_PRESSED = 1;
 
+    /** Key to use in the session's AuthType.
+     * Intentionally matches the type used for the official OATH Auth Module, to allow for device management from the Dashboard.
+     */
+    static final String OATH_AUTH_TYPE = "AuthenticatorOATH";
+
     /**
      * Configuration for the node.
      */
@@ -96,7 +101,7 @@ public class OathVerifierNode extends AbstractDecisionNode {
             verifyCode(nameCallback.get().getName(), deviceSettings);
             helper.saveOathDeviceSettings(context, deviceSettings);
 
-            Action.ActionBuilder actionBuilder = Action.goTo(SUCCESS.name());
+            Action.ActionBuilder actionBuilder = Action.goTo(SUCCESS.name()).addNodeType(context, OATH_AUTH_TYPE);
             addRecoveryCodesToTransientState(context, actionBuilder);
 
             return actionBuilder.build();

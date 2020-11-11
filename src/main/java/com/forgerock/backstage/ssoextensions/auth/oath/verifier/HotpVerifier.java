@@ -47,7 +47,7 @@ public final class HotpVerifier extends AbstractOathVerifier {
                 throw new OathVerificationException(e.getMessage(), e);
             }
             if (isEqual(otpGen, otp)) {
-                settings.setCounter(counter);
+                settings.setCounter(counter + i);
                 return;
             }
         }

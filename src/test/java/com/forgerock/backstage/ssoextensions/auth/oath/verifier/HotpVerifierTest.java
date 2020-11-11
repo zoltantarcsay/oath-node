@@ -23,6 +23,7 @@ import org.forgerock.openam.core.rest.devices.oath.OathDeviceSettings;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class HotpVerifierTest {
@@ -55,5 +56,12 @@ public class HotpVerifierTest {
     public void verify_whenInvalidToken_thenFail() {
         assertThatThrownBy(() -> hotpVerifier.verify("foo"))
                 .isInstanceOf(OathVerificationException.class);
+    }
+
+    @Test
+    public void verify_incrementCounter() throws OathVerificationException {
+        int counter = settings.getCounter();
+        hotpVerifier.verify("853971");
+        assertThat(settings.getCounter()).isEqualTo(counter + 1);
     }
 }
